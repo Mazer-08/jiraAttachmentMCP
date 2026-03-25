@@ -330,7 +330,7 @@ async def get_text_attachment(issue_key: str, attachment_id: str) -> dict[str, A
 # -----------------------------------------------------------------------------
 # HTTP app for Render / remote MCP
 # -----------------------------------------------------------------------------
-mcp_app = mcp.http_app(path="/", transport="sse")
+mcp_app = mcp.http_app(path="/")
 app = FastAPI(lifespan=mcp_app.lifespan, title="Jira Attachments MCP")
 app.mount("/mcp", mcp_app)
 
