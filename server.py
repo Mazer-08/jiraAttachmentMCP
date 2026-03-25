@@ -4,6 +4,7 @@ import base64
 import mimetypes
 import os
 import re
+import uvicorn
 from pathlib import Path
 from typing import Any, Optional
 from urllib.parse import quote
@@ -329,7 +330,7 @@ async def get_text_attachment(issue_key: str, attachment_id: str) -> dict[str, A
 # -----------------------------------------------------------------------------
 # HTTP app for Render / remote MCP
 # -----------------------------------------------------------------------------
-mcp_app = mcp.http_app(path="/")
+mcp_app = mcp.http_app(path="/", transport="sse")
 app = FastAPI(lifespan=mcp_app.lifespan, title="Jira Attachments MCP")
 app.mount("/mcp", mcp_app)
 
@@ -353,6 +354,4 @@ async def http_health() -> dict[str, Any]:
 
 
 if __name__ == "__main__":
-    import uvicorn
-
     uvicorn.run("server:app", host="0.0.0.0", port=PORT)
